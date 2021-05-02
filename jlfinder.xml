@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="system" method="upgrade">
+	<name>plg_system_jlfinder</name>
+	<author>Hannes Papenberg</author>
+	<creationDate>March 2018</creationDate>
+	<copyright>Copyright (C) 2018 Hannes Papenberg. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>info@joomlager.de</authorEmail>
+	<authorUrl>www.joomlager.de</authorUrl>
+	<version>0.4.0</version>
+	<description>PLG_JLFINDER_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="jlfinder">jlfinder.php</filename>
+		<folder>admin</folder>
+		<folder>site</folder>
+		<folder>language</folder>
+		<folder>libraries</folder>
+	</files>
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">admin/sql/install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">admin/sql/uninstall.sql</file>
+		</sql>
+	</uninstall>
+	<update>
+		<schemas>
+			<schemapath type="mysql">admin/sql/updates</schemapath>
+		</schemas>
+	</update>
+	<updateservers>
+		<server name="Joomlager Update Server" type="collection">https://www.joomlager.de/updates/updates.xml</server>
+	</updateservers>
+</extension>
