@@ -117,7 +117,7 @@ class FinderModelSearch extends JModelList
 		return $this->searchquery;
 	}
 
-/**
+	/**
 	 * Method to build a database query to load the list data.
 	 *
 	 * @return  \JDatabaseQuery  A database query.
@@ -133,14 +133,20 @@ class FinderModelSearch extends JModelList
 		// Create a new query object.
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
+		$wrappingQuery = $db->getQuery(true);
+		$query->setLimit($this->getStart(), $this->getState('list.limit'));
 
 		// Select the required fields from the table.
 		$query->select(
+			'l.link_id'
+		);
+		$wrappingQuery->select(
 			$this->getState(
 				'list.select',
-				'l.link_id, l.object'
+				'w.link_id, w.ordering, j.object'
 			)
 		);
+		$wrappingQuery->innerJoin('#__finder_links AS j ON w.link_id = j.link_id');
 
 		$query->from('#__finder_links AS l');
 
@@ -157,7 +163,6 @@ class FinderModelSearch extends JModelList
 			->where('(l.publish_end_date = ' . $nullDate . ' OR l.publish_end_date >= ' . $nowDate . ')');
 
 		$query->group('l.link_id');
-		$query->group('l.object');
 
 		/*
 		 * Add the taxonomy filters to the query. We have to join the taxonomy
@@ -269,7 +274,9 @@ class FinderModelSearch extends JModelList
 		if (empty($this->includedTerms) && $this->searchquery->empty && !$this->searchquery->input)
 		{
 			// Return the results.
-			return $query;
+			$wrappingQuery->from('(' . $query . ') AS w');
+
+			return $wrappingQuery;
 		}
 
 		/*
@@ -284,7 +291,10 @@ class FinderModelSearch extends JModelList
 				->clear('group')
 				->where('false');
 
-			return $query;
+			// Return the results.
+			$wrappingQuery->from('(' . $query . ') AS w');
+
+			return $wrappingQuery;
 		}
 
 		if ($ordering === 'm.weight')
@@ -327,7 +337,10 @@ class FinderModelSearch extends JModelList
 			}
 		}
 
-		return $query;
+		// Return the results.
+		$wrappingQuery->from('(' . $query . ') AS w');
+
+		return $wrappingQuery;
 	}
 
 	/**
