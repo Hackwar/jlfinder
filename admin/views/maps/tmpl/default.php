@@ -82,7 +82,7 @@ JFactory::getDocument()->addScriptDeclaration('
 					</th>
 						<?php if (Multilanguage::isEnabled()) : ?>
 							<th scope="col" style="width:10%" class="nowrap d-none d-md-table-cell text-center">
-								<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
+								<?php echo JHTML::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 							</th>
 						<?php endif; ?>
 				</tr>
