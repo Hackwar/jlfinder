@@ -282,6 +282,7 @@ class FinderModelSearch extends JModelList
 			$query->clear('join')
 				->clear('where')
 				->clear('group')
+				->clear('having')
 				->where('false');
 
 			return $query;
@@ -323,7 +324,6 @@ class FinderModelSearch extends JModelList
 				{
 					$query->where('false');
 				}
-				$i++;
 			}
 		}
 
